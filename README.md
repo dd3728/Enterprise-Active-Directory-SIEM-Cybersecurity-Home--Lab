@@ -1,4 +1,4 @@
-# Digital Defence 3728 Page 1 of 43
+Digital Defence 3728 Page 1 of 43
 
 Enterprise Active
 Directory + SIEM
@@ -12,7 +12,7 @@ Build hands-on SOC analyst skills
 Blessed Muteswa
 
 
-# Digital Defence 3728Page 2 of 43
+Digital Defence 3728Page 2 of 43
 
 # Digital Defence 3728 — On-Prem SOC Analyst Home Lab
 Author: Blessed Muteswa
@@ -32,7 +32,7 @@ Windows client, and two exercise systems (Kali, Metasploitable2).
  All configuration, troubleshooting and verification steps are included, so the lab is fully
 reproducible and suitable.
 
-Hardware Optimization for my MSI Laptop
+# Hardware Optimization for my MSI Laptop
 
 o  Host System: Windows 11 (Hypervisor Host)
 o  CPU: Intel i5 6 cores, 12 Logical Processors
@@ -41,22 +41,22 @@ o  Storage: 1TB SSD + 500GB SSD NVMe
 o  Storage: 500GB SSD (Primary for VMs),
 o  500GB NVMe (Host OS & Applications)
 
-Goal: stable, repeatable SOC work; minimal risk of host lag.
+# Goal: stable, repeatable SOC work; minimal risk of host lag.
 
 Host reserve: 8 GB RAM; reserve 4 logical processors for host → 32 GB RAM and 8 logical
 processors available to VMs.
 
 Digital Defence 3728 Page 3 of 43
 
-1 — SUMMARY / OUTCOMES
+# 1 — SUMMARY / OUTCOMES
 
-2 — ARCHITECTURE & VM SIZING
+# 2 — ARCHITECTURE & VM SIZING
 
-3 — FILES / ISOS (OFFICIAL SOURCES)
+# 3 — FILES / ISOS (OFFICIAL SOURCES)
 
-4 — STEP-BY-STEP BUILD — OVERVIEW
+# 4 — STEP-BY-STEP BUILD — OVERVIEW
 
-5 — PFSENSE INSTALLATION & CONFIGURATION
+# 5 — PFSENSE INSTALLATION & CONFIGURATION
 
 A. VMware network preparation (host)
 
@@ -76,7 +76,7 @@ H. Remote syslog forwarding to Splunk
 
 I. Validation
 
-6 — WINDOWS SERVER 2022: INSTALLED, DC PROMOTION & DNS & DC
+# 6 — WINDOWS SERVER 2022: INSTALLED, DC PROMOTION & DNS & DC
 TROUBLESHOOTING REF: 6-(F)
 
 A. OS installation & static IP
@@ -91,7 +91,7 @@ F. DC troubleshooting
 
 G. Validation
 
-7 — JUMPBOX (WINDOWS 11 LTSC): INSTALL, HARDENING & TOOLS
+# 7 — JUMPBOX (WINDOWS 11 LTSC): INSTALL, HARDENING & TOOLS
 
 
 Digital Defence 3728 Page 4 of 43
@@ -109,7 +109,7 @@ D. Quick hardening commands
 E. Access validation
 
 
-8 — UBUNTU SERVER 24.04 LTS: INSTALLATION, NETWORKING, HARDENING &
+# 8 — UBUNTU SERVER 24.04 LTS: INSTALLATION, NETWORKING, HARDENING &
 SPLUNK
 
 A. Install Ubuntu Server 24.04
@@ -123,7 +123,7 @@ D. Splunk Enterprise installation
 E. Validation tests
 
 
-9 — WINDOWS CLIENT: DOMAIN JOIN, SPLUNK UF & SYSMON
+# 9 — WINDOWS CLIENT: DOMAIN JOIN, SPLUNK UF & SYSMON
 
 A. Networking & DNS
 
@@ -137,11 +137,11 @@ E. Install Sysmon
 
 F. Validate ingestion in Splunk
 
-10 — KALI & METASPLOITABLE2: CONTROLLED USAGE
+# 10 — KALI & METASPLOITABLE2: CONTROLLED USAGE
 
 Kali static IP (Network Manager):
 
-11 — TROUBLESHOOTING LOG (CHRONOLOGICAL ORDER)
+# 11 — TROUBLESHOOTING LOG (CHRONOLOGICAL ORDER)
 SRV Lookup / DNS Failure on Domain Controller (DC) Symptom
 Set-NetConnectionProfile Refusing Domain Authenticated
 Ubuntu DNS Using 127.0.0.53 and NXDOMAIN/SERVFAIL
@@ -154,18 +154,19 @@ Wrong Subnet Symptom
 RDP / Firewall / Profile Mismatches
  
 
-12 — VERIFICATION & VALIDATION COMMANDS
+# 12 — VERIFICATION & VALIDATION COMMANDS
 
 Windows DC
 Ubuntu SIEM
 Splunk searches
 
-13 — WHY THE DOMAIN CONTROLLER IS AUTHORITATIVE DNS
+# 13 — WHY THE DOMAIN CONTROLLER IS AUTHORITATIVE DNS
 
-14 — KALI / METASPLOITABLE: NETWORK SETUP
+# 4 — KALI / METASPLOITABLE: NETWORK SETUP
 
+# 1
 
-1 — Summary / Outcomes
+# 1 — Summary / Outcomes
 
 •  Built a Blue-Team SOC lab named Digital Defence 3728.
 
@@ -180,7 +181,9 @@ Sysmon telemetry ingestion, and controlled attacker/test hosts.
 Netplan/cloud-init override; incorrect subnet assignment; RDP profile & firewall
 issues; all fixes and verification commands are documented.
 
-2 — Architecture & VM sizing
+# 2
+
+# 2 — Architecture & VM sizing
 Network: single isolated lab LAN 192.168.60.0/24, pfSense LAN 192.168.60.1, DC/DNS
 192.168.60.10, SIEM 192.168.60.20
 
@@ -213,8 +216,8 @@ VM sizing (final):
 •  Kali: 2 vCPU / 2 GB RAM / 40 GB disk
 •  Metasploitable2: 1 vCPU / 1 GB RAM / 20 GB disk
 
-
-3 — Files / ISOs (official sources)
+# 3
+# 3 — Files / ISOs (official sources)
 Downloaded official images only (evaluation or community builds):
 
 •  pfSense: https://www.pfsense.org/download/
@@ -235,8 +238,9 @@ Center
 
 •  Metasploitable2: Rapid7 / official archived images
 
+# 4
 
-4 — Step-by-step build — overview
+# 4 — Step-by-step build — overview
 High-level order of execution:
 
 1.  Created VMware networks (VMnet8 NAT, VMnet1 Host-only 192.168.60.0/24),
@@ -274,8 +278,12 @@ Sysmon.
 
 Each major section below pairs steps with commands and validation checks.
 
+# 5
 
-5 — pfSense installation & configuration
+# 5 — pfSense installation & configuration
+
+[ screenshots <https://imgur.com/gallery/dd3728-pfsense-PD5Zffh> ]
+
 Goal: pfSense provides a safe gateway for internet access and isolates the lab LAN, while
 forwarding logs to the Splunk SIEM.
 
@@ -422,8 +430,12 @@ On pfSense GUI: Status → Interfaces:
 
 [screenshots           ]
 
+# 6
 
-6 — Windows Server 2022: installed, DC promotion & DNS & DC
+# 6 — Windows Server 2022: installed, DC promotion & DNS & DC
+
+[ screenshots <https://imgur.com/gallery/win-server-2022-dc-dns-z90esUx> ]
+
 troubleshooting ref: 6-(F)
 Goal: Created digitaldefence3728.lab, made the DC authoritative for AD DNS, and
 validated Netlogon SRV registrations.
@@ -673,7 +685,9 @@ authentication and domain-related tasks.
 
 Digital Defence 3728 Page 17 of 43
 
-7 — Jumpbox (Windows 11 LTSC): install, hardening & tools
+# 7
+
+# 7 — Jumpbox (Windows 11 LTSC): install, hardening & tools
 Goal: Analyst workstation for accessing Splunk (web), SSH to Linux, and RDP to Windows
 Server, with hardened baseline and investigation tools.
 
@@ -821,7 +835,9 @@ ssh dd3728-analyst@192.168.60.20
 
 [screenshots           ]
 
-8 — Ubuntu Server 24.04 LTS: installation, networking, hardening &
+# 8
+
+# 8 — Ubuntu Server 24.04 LTS: installation, networking, hardening &
 Splunk
 Goal: Minimal GUI-less server with static network, hardened baseline, and Splunk
 Enterprise configured to receive logs.
@@ -1456,7 +1472,9 @@ What it proves:
 
 [screenshots 👆🏾👇🏾]
 
-9 — Windows Client: domain join, Splunk UF & Sysmon
+# 9
+
+# 9 — Windows Client: domain join, Splunk UF & Sysmon
 Goal: Generate realistic endpoint telemetry for Splunk.
 
 A. Networking & DNS
@@ -1770,7 +1788,9 @@ index=windows sourcetype=WinEventLog:Security
 
 [screenshot           ]
 
-10 — Kali & Metasploitable2: controlled usage
+# 10
+
+# 10 — Kali & Metasploitable2: controlled usage
 
 •  Kept Kali and Metasploitable2 on the 192.168.60.0/24 LAN and powered off when
 
@@ -1800,7 +1820,9 @@ nmcli con up "Wired connection 1"
 Metasploitable2 typically uses DHCP; ensured it gets a 192.168.60.x address from
 pfSense.
 
-11 — Troubleshooting Log (Chronological Order)
+# 11
+
+# 11 — Troubleshooting Log (Chronological Order)
 
 SRV Lookup / DNS Failure on Domain Controller (DC) Symptom
 
@@ -1896,7 +1918,9 @@ to Private; AD DNS health was confirmed, so it switched to DomainAuthenticated.
 
 Digital Defence 3728 Page 42 of 43
 
-12 — Verification & validation commands
+# 12
+
+# 12 — Verification & validation commands
 Windows DC:
 
 #powershell
@@ -1925,7 +1949,9 @@ index=network sourcetype=pfsense | head 50
 index=windows EventCode=4625 | stats count by Account_Name,
 ComputerName | where count > 3
 
-13 — Why the Domain Controller is Authoritative DNS
+# 13
+
+# 13 — Why the Domain Controller is Authoritative DNS
 
 ▫
 
@@ -1950,7 +1976,9 @@ digitaldefence3728.lab.
 optional Dynamic Host Configuration Protocol (DHCP) server—but it does not
 replace AD DNS.
 
- 14 — Kali / Metasploitable: Network Setup
+# 14
+
+# 14 — Kali / Metasploitable: Network Setup
 #bash
 
 # Kali static via NetworkManager

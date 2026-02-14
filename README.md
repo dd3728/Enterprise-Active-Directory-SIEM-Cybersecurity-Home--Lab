@@ -282,7 +282,7 @@ Each major section below pairs steps with commands and validation checks.
 
 # 5 — pfSense installation & configuration
 
-[ screenshots <https://imgur.com/gallery/dd3728-pfsense-PD5Zffh> ]
+[ screenshots - Imgur <https://imgur.com/gallery/dd3728-pfsense-PD5Zffh> ]
 
 Goal: pfSense provides a safe gateway for internet access and isolates the lab LAN, while
 forwarding logs to the Splunk SIEM.
@@ -434,7 +434,7 @@ On pfSense GUI: Status → Interfaces:
 
 # 6 — Windows Server 2022: installed, DC promotion & DNS & DC
 
-[ screenshots <https://imgur.com/gallery/win-server-2022-dc-dns-z90esUx> ]
+[ screenshots - Imgur <https://imgur.com/gallery/win-server-2022-dc-dns-z90esUx> ]
 
 troubleshooting ref: 6-(F)
 Goal: Created digitaldefence3728.lab, made the DC authoritative for AD DNS, and
@@ -688,6 +688,9 @@ authentication and domain-related tasks.
 # 7
 
 # 7 — Jumpbox (Windows 11 LTSC): install, hardening & tools
+
+[ sceenshots - Imgur <https://imgur.com/gallery/jumpbox-workstation-O4twZ59> ]
+
 Goal: Analyst workstation for accessing Splunk (web), SSH to Linux, and RDP to Windows
 Server, with hardened baseline and investigation tools.
 
@@ -837,8 +840,10 @@ ssh dd3728-analyst@192.168.60.20
 
 # 8
 
-# 8 — Ubuntu Server 24.04 LTS: installation, networking, hardening &
-Splunk
+# 8 — Ubuntu Server 24.04 LTS: installation, networking, hardening & Splunk
+
+[ screenshots - Imgur <https://imgur.com/gallery/ubuntu-server-splunk-software-siem-ProxmMb> ]
+
 Goal: Minimal GUI-less server with static network, hardened baseline, and Splunk
 Enterprise configured to receive logs.
 

@@ -5,11 +5,14 @@ Directory + SIEM
 Cybersecurity Home-
 Lab
 
+
 # Puporse:
 Build hands-on SOC analyst skills
 
+
 # Prepared by:
 Blessed Muteswa
+
 
 
 Digital Defence 3728Page 2 of 43
@@ -17,12 +20,14 @@ Blessed Muteswa
 # Digital Defence 3728 — On-Prem SOC Analyst Home Lab
 Author: Blessed Muteswa
 
+
 # Introduction
 
 Digital Defence 3728 is an on-premises, virtualized SOC analyst lab designed to
 demonstrate Blue-Team skills: centralized logging. The lab runs on VMware Workstation
 Pro (host Windows 11) and uses a tightly controlled network with pfSense as gateway and
 a single AD authoritative DNS server.
+
 
 # Key components
 
@@ -32,6 +37,7 @@ Windows client, and two exercise systems (Kali, Metasploitable2).
  All configuration, troubleshooting and verification steps are included, so the lab is fully
 reproducible and suitable.
 
+
 # Hardware Optimization for my MSI Laptop
 
 o  Host System: Windows 11 (Hypervisor Host)
@@ -40,6 +46,7 @@ o  RAM: 40GB Total
 o  Storage: 1TB SSD + 500GB SSD NVMe
 o  Storage: 500GB SSD (Primary for VMs),
 o  500GB NVMe (Host OS & Applications)
+
 
 # Goal: stable, repeatable SOC work; minimal risk of host lag.
 
@@ -162,7 +169,10 @@ Splunk searches
 
 # 13 — WHY THE DOMAIN CONTROLLER IS AUTHORITATIVE DNS
 
-# 4 — KALI / METASPLOITABLE: NETWORK SETUP
+# 14 — KALI / METASPLOITABLE: NETWORK SETUP
+
+
+
 
 # 1
 
@@ -180,6 +190,9 @@ Sysmon telemetry ingestion, and controlled attacker/test hosts.
 •  Captured and resolved real faults: DC rename → stale DNS/glue A record; Ubuntu
 Netplan/cloud-init override; incorrect subnet assignment; RDP profile & firewall
 issues; all fixes and verification commands are documented.
+
+
+
 
 # 2
 
@@ -216,6 +229,9 @@ VM sizing (final):
 •  Kali: 2 vCPU / 2 GB RAM / 40 GB disk
 •  Metasploitable2: 1 vCPU / 1 GB RAM / 20 GB disk
 
+
+
+
 # 3
 # 3 — Files / ISOs (official sources)
 Downloaded official images only (evaluation or community builds):
@@ -237,6 +253,9 @@ Center
 •  Kali Linux: https://www.kali.org/get-kali/
 
 •  Metasploitable2: Rapid7 / official archived images
+
+
+
 
 # 4
 
@@ -278,6 +297,9 @@ Sysmon.
 
 Each major section below pairs steps with commands and validation checks.
 
+
+
+
 # 5
 
 # 5 — pfSense installation & configuration
@@ -303,6 +325,7 @@ VMware DHCP (pfSense will provide DHCP).
 
 [screenshots           ]
 
+
 B. Created pfSense VM
 
 •  Guest OS: Netgate-Installer v1.1
@@ -324,6 +347,7 @@ o  Adapter 2 → VMnet1 (LAN).
 
 [screenshots           ]
 
+
 C. Installed pfSense (console)
 
 •  Booted from pfSense ISO and followed installer defaults.
@@ -331,6 +355,7 @@ C. Installed pfSense (console)
 •  Accepted partitioning and standard options; rebooted into installed pfSense.
 
 [screenshots           ]
+
 
 D. Assigned interfaces (console)
 At pfSense console:
@@ -342,6 +367,7 @@ NIC mapped to VMnet1 [em1] as LAN.
 •  Option 2: Set LAN IP to 192.168.60.1 with prefix /24. Enabled DHCP.
 
 [screenshot           ]
+
 
 E. GUI setup
 From Jumpbox on LAN:
@@ -363,6 +389,7 @@ o  Admin password: ************
 [screenshots           ]
 
 
+
 Digital Defence 3728 Page 10 of 43
 
 F. DHCP & DNS settings
@@ -380,6 +407,7 @@ clients use AD DNS for name resolution (instead of pfSense).
 
 [screenshots           ]
 
+
 G. Firewall rules
 
 •  Firewall → Rules → LAN: added baseline “Allow LAN net → any” rule for lab
@@ -392,6 +420,7 @@ convenience.
 
 [screenshots           ]
 
+
 H. Remote syslog forwarding to Splunk
 
 •  Status → System Logs → Settings → Remote Logging Options.
@@ -403,6 +432,7 @@ H. Remote syslog forwarding to Splunk
 •  Applied and saved.
 
 [screenshots           ]
+
 
 I. Validation
 From Jumpbox (PowerShell):
@@ -417,9 +447,11 @@ pinged 192.168.60.1
 [screenshots           ]
 
 
+
 •  Browse to https://192.168.60.1 and confirmed pfSense GUI loads.
 
 [screenshots           ]
+
 
 
 On pfSense GUI: Status → Interfaces:
@@ -429,6 +461,9 @@ On pfSense GUI: Status → Interfaces:
 •  Confirmed LAN is 192.168.60.1/24.
 
 [screenshots           ]
+
+
+
 
 # 6
 
@@ -466,6 +501,7 @@ ipconfig /all
 
 [screenshots           ]
 
+
 B. Installed AD DS role
 
 #powershell
@@ -481,6 +517,7 @@ domain environment.”
 Note: AD DS was installed via GUI instead
 
 [screenshots           ]
+
 
 C. Promote to forest root (new domain)
 #powershell
@@ -521,6 +558,7 @@ auditable.”
 
 [screenshots           ]
 
+
 Server FQDN: <Unable to resolve> next to 192.168.60.1
 
 “That message simply says the DC cannot reverse-resolve the IP 192.168.60.1 to a
@@ -548,6 +586,7 @@ Expected: DNS tests pass with proper SRV records and no missing glue A records.
 Digital Defence 3728 Page 14 of 43
 
 [screenshot           failed   ]
+
 
 ℹ️ Reason why DNS test failed = ref: DC troubleshoot = 6_F
 
@@ -602,6 +641,7 @@ Computer: WIN-78P8G7QM6IM _ WIN76P8G7QM6IM.DigitalDefence3728.lab
 
 [screenshots           ]
 
+
 old host name → WIN76P8G7QM6IM.DigitalDefence3728.lab
 
 2. Created correct A and PTR records for the new hostname ( DD3728-DC →
@@ -611,6 +651,7 @@ old host name → WIN76P8G7QM6IM.DigitalDefence3728.lab
 DD3728-DC → digitaldefence3728.lab
 
 [screenshots           ]
+
 
 XML view
 
@@ -680,10 +721,14 @@ authentication and domain-related tasks.
 
 [screenshot      ]
 
+
 •  Expected to see the DD3728-DC host in the SRV results.
 
 
 Digital Defence 3728 Page 17 of 43
+
+
+
 
 # 7
 
@@ -740,6 +785,7 @@ net user analyst ************** /add
 •  Creates a low-privilege analyst account aligned with least-privilege principles.
 
 [screenshots           ]
+
 
 C. Tools and rationale
 Installed:
@@ -803,6 +849,7 @@ RemoteAddress 192.168.60.30
 
 [screenshots           ]
 
+
 Disable SMBv1:
 
 #powershell
@@ -838,6 +885,9 @@ ssh dd3728-analyst@192.168.60.20
 
 [screenshots           ]
 
+
+
+
 # 8
 
 # 8 — Ubuntu Server 24.04 LTS: installation, networking, hardening & Splunk
@@ -852,6 +902,7 @@ A. Install Ubuntu Server 24.04
 
 [screenshots      selected  ]
 
+
 •  enabled SSH during installation.
 
 Install OpenSSH server: This option allows you to install the OpenSSH server
@@ -862,6 +913,7 @@ package, which is essential for remote access to the server via the SSH protocol
 the server using password authentication.
 
 [screenshots           ]
+
 
 •  Created admin user →dd3728-analyst.
 
@@ -900,6 +952,7 @@ real enterprise server, not a DHCP client.
 
 [screenshots 👆🏾👇🏾]
 
+
   Disable cloud-init networking and remove conflicting Netplan file:
 
 #bash
@@ -913,6 +966,7 @@ sudo rm -f /etc/netplan/50-cloud-init.yaml
 rebooting.
 
 [screenshots 👆🏾👇🏾]
+
 
   Fix permissions and apply:
 
@@ -937,6 +991,7 @@ settings, and verify DNS resolution status.
 
 [screenshots 👆🏾👇🏾]
 
+
 Validation:
 
 #bash
@@ -957,6 +1012,7 @@ Internet name resolution works
 This verifies correct routing + DNS forwarding.
 
 [screenshots 👆🏾👇🏾]
+
 
 C. Hardening (baseline)
 #Update and basic tools:
@@ -980,6 +1036,7 @@ use.
 
 [screenshots 👆🏾👇🏾]
 
+
 Create Splunk service user:
 
 #bash
@@ -988,6 +1045,7 @@ sudo adduser splunk-dd3728
 sudo usermod -aG sudo splunk
 
 [screenshots 👆🏾👇🏾]
+
 
 What happened ?
 
@@ -1055,6 +1113,7 @@ This:
 
 [screenshots 👆🏾👇🏾]
 
+
   Install auditd:
 
 #bash
@@ -1093,6 +1152,7 @@ Implements zero-trust host firewalling while allowing only:
 
 [screenshots 👆🏾👇🏾]
 
+
 Time sync:
 
 #bash
@@ -1105,6 +1165,7 @@ sudo timedatectl set-ntp true
 correlation and investigations.
 
 [screenshot      ]
+
 
 Configure resource limits for Splunk:
 
@@ -1123,6 +1184,7 @@ Raise Splunk file limits:
 •  Prevents Splunk from dropping logs during high-volume ingestion.
 
 [screenshots 👆🏾👇🏾]
+
 
 Why I disabled Transparent Huge Pages (THP)
 
@@ -1236,7 +1298,9 @@ boot, ensuring Splunk runs on a predictable memory model.
 
 [screenshot           non-consistent configurations]
 
+
 [screenshot           consistent configurations]
+
 
   Enable unattended security updates:
 
@@ -1344,6 +1408,7 @@ natural first step.
 
 [screenshots 👆🏾👇🏾]
 
+
 tcpdump captured 0 packets on UDP 514 (diagnostic reasoning)
 
 #bash
@@ -1364,6 +1429,7 @@ targeted this host.
 
 [screenshots 👆🏾👇🏾]
 
+
 Why 1514 is the right decision
 
 “Ports <1024 require root; running Splunk as root is unacceptable for security. Using
@@ -1382,6 +1448,7 @@ non-root service user (splunk-dd3728) for security, so it cannot bind to UDP 514
 1514 ( >1024 ) avoids granting Splunk elevated privileges and follows least-privilege
 practice.
 
+
 2) restart Splunk 🏾(apply changes)
 
 sudo -u splunk /opt/splunk/bin/splunk restart
@@ -1391,6 +1458,7 @@ inputs.conf.
 
 Why used: Changes to inputs only take effect after Splunk restarts.
 
+
 3) allow UDP 1514 through host firewall
 
 sudo ufw allow 1514/udp
@@ -1399,6 +1467,7 @@ What it does: Opens port 1514/UDP on the Ubuntu host so incoming syslog packets 
 not blocked.
 
 Why used: Even if Splunk listens, the OS firewall can still drop packets.
+
 
 4) verify listener
 
@@ -1414,6 +1483,7 @@ Why used: Confirms Splunk is actually bound to 1514 and ready to receive.
 sudo -u splunk /opt/splunk/bin/splunk restart
 
 [screenshots 👆🏾👇🏾]
+
 
 E. Validation tests
 Jumpbox – Splunk Web connectivity test  :
@@ -1435,6 +1505,7 @@ What it proves:
 •  Splunk Web service is listening
 
 [screenshots 👆🏾👇🏾]
+
 
 Splunk Server – Process validation  :
 
@@ -1477,6 +1548,9 @@ What it proves:
 
 [screenshots 👆🏾👇🏾]
 
+
+
+
 # 9
 
 # 9 — Windows Client: domain join, Splunk UF & Sysmon
@@ -1495,6 +1569,7 @@ New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress
 
 [screenshots 👆🏾👇🏾]
 
+
 B. Domain join
 #powershell
 
@@ -1508,10 +1583,12 @@ Domain successfully joined
 
 [screenshots 👆🏾👇🏾]
 
+
    Prior win-client DC join, I had already set up a client user named Ben and added
 DD3728-CLIENT VM machine under user Ben to Log-on using that machine.
 
 [screenshot             ]
+
 
   Below is a brief, precise, explanation of what I configured and why.
 
@@ -1567,6 +1644,7 @@ minHotIdleSecsBeforeForceRoll = 0
 
 [screenshots 👆🏾👇🏾]
 
+
 Why I created a dedicated admin app (admin-demo)
 
 ▫
@@ -1580,6 +1658,7 @@ separate admin-level app.
 
 [screenshot           ]
 
+
   Improves maintainability, auditing, and portability
 
 Indexes are now managed at:
@@ -1587,6 +1666,7 @@ Indexes are now managed at:
 /opt/splunk/etc/apps/admin-demo/local/indexes.conf
 
 [screenshot          ]
+
 
 Index design intent
 
@@ -1687,6 +1767,7 @@ Gui installation:
 
 [screenshot          ]
 
+
 D. Configure UF inputs for Windows Event Logs
 Create/edit
 C:\ProgramFiles\SplunkUniversalForwarder\etc\system\local\inputs.c
@@ -1758,6 +1839,7 @@ This shows:
 
 [screenshot           ]
 
+
 E. Install Sysmon
 Downloaded Sysmon Sysmon v15.15 and a vetted configuration SwiftOnSecurity’s
 sysmonconfig-export.xml
@@ -1770,6 +1852,7 @@ C:\Tools\Sysmon:
 
 [screenshot           ]
 
+
 Ran:
 
 #powershell
@@ -1780,6 +1863,7 @@ C:\Tools\Sysmon\sysmonconfig-export.xml
 
 [screenshot          ]
 
+
 Check event log:
 
 #powershell
@@ -1789,12 +1873,17 @@ MaxEvents 40
 
 [screenshot          ]
 
+
 F. Validate ingestion in Splunk
 In Splunk Web:
 
 index=windows sourcetype=WinEventLog:Security
 
 [screenshot           ]
+
+
+
+
 
 # 10
 
@@ -1829,8 +1918,12 @@ nmcli con up "Wired connection 1"
 
 [screenshot           ]
 
+
 Metasploitable2 typically uses DHCP; ensured it gets a 192.168.60.x address from
 pfSense.
+
+
+
 
 # 11
 
@@ -1930,6 +2023,9 @@ to Private; AD DNS health was confirmed, so it switched to DomainAuthenticated.
 
 Digital Defence 3728 Page 42 of 43
 
+
+
+
 # 12
 
 # 12 — Verification & validation commands
@@ -1961,6 +2057,9 @@ index=network sourcetype=pfsense | head 50
 index=windows EventCode=4625 | stats count by Account_Name,
 ComputerName | where count > 3
 
+
+
+
 # 13
 
 # 13 — Why the Domain Controller is Authoritative DNS
@@ -1987,6 +2086,9 @@ digitaldefence3728.lab.
 ▫  PfSense acts as the gateway, Network Address Translation (NAT) device, and
 optional Dynamic Host Configuration Protocol (DHCP) server—but it does not
 replace AD DNS.
+
+
+
 
 # 14
 

@@ -1134,26 +1134,26 @@ a small OS-level change that materially improves reliability for a production SI
 
 #!/bin/bash
 
-### BEGIN INIT INFO
+#BEGIN INIT INFO
 
-# Provides:          disable-thp
+#Provides:          disable-thp
 
-# Required-Start:    $local_fs
+#Required-Start:    $local_fs
 
-# Required-Stop:
+#Required-Stop:
 
-# X-Start-Before:    couchbase-server
+#X-Start-Before:    couchbase-server
 
-# Default-Start:     2 3 4 5
+#Default-Start:     2 3 4 5
 
-# Default-Stop:      0 1 6
+#Default-Stop:      0 1 6
 
-# Short-Description: Disable THP
+#Short-Description: Disable THP
 
-# Description:       Disables transparent huge pages (THP) on
+#Description:       Disables transparent huge pages (THP) on
 boot, to improve
 
-#                    Couchbase performance.
+                    Couchbase performance.
 
 ### END INIT INFO
 
@@ -1480,6 +1480,9 @@ What it proves:
 # 9
 
 # 9 — Windows Client: domain join, Splunk UF & Sysmon
+
+[ screenshots - Imgur <https://imgur.com/gallery/dd3728-win-client-H7jhMMo> ]
+
 Goal: Generate realistic endpoint telemetry for Splunk.
 
 A. Networking & DNS
@@ -1797,6 +1800,10 @@ index=windows sourcetype=WinEventLog:Security
 
 # 10 — Kali & Metasploitable2: controlled usage
 
+[ screenshots - Imgur <https://imgur.com/gallery/dd3728-kali-attacker-machine-dvfvUpC> ]
+
+[ screenshota - Imgur <https://imgur.com/gallery/dd2837-metasploitable-vulnerable-machine-oXcZy5g> ]
+
 •  Kept Kali and Metasploitable2 on the 192.168.60.0/24 LAN and powered off when
 
 not testing.
@@ -1984,9 +1991,14 @@ replace AD DNS.
 # 14
 
 # 14 — Kali / Metasploitable: Network Setup
+
+
 #bash
 
 # Kali static via NetworkManager
+
+[ screenshots - Imgur <https://imgur.com/gallery/dd3728-kali-attacker-machine-dvfvUpC> ]
+
 nmcli con mod "Wired connection 1" ipv4.addresses 192.168.60.40/24
 ipv4.gateway 192.168.60.1 ipv4.dns 192.168.60.10 ipv4.method
 manual
@@ -1995,4 +2007,7 @@ nmcli con up "Wired connection 1"
 [screenshot           ]
 
 # Metasploitable set DNS
+
+[ screenshota - Imgur <https://imgur.com/gallery/dd2837-metasploitable-vulnerable-machine-oXcZy5g> ]
+
 sudo sh -c 'echo "nameserver 192.168.60.10" > /etc/resolv.conf'
